@@ -4,7 +4,11 @@ import {
     callingElements,
     createNewElements,
 } from "./functions.js";
-import './book-preview.js';
+import './book-previews.js';
+import './genre-dropdown.js';
+import './author-dropdown.js';
+import './toggle-theme.js';
+import './book-lists.js';
 //these functions help with DOM manipulation
 
 let page = 1;
@@ -24,84 +28,21 @@ for (const { author, id, image, title } of matches.slice(0, BOOKS_PER_PAGE)) {
 
 callingElements.listItems.appendChild(starting); // append fragment to the DOM
 
-
-callingElements.listItems.appendChild(starting); // append fragment to the DOM
-
 // Create genre dropdown
-function createGenre() { // this function populates the genres dropdown
-    const genreHtml = newDocument;
-    const firstGenreElement = document.createElement('option');
-    firstGenreElement.value = 'any';
-    firstGenreElement.innerText = 'All Genres';
-    genreHtml.appendChild(firstGenreElement);
-    
-    for (const [id, name] of Object.entries(genres)) {
-        const element = document.createElement('option');
-        element.value = id;
-        element.innerText = name;
-        genreHtml.appendChild(element);
-    }
-
-    callingElements.searchGenres.appendChild(genreHtml); //appends the genres dropdown to the DOM
-}
-
-createGenre();
+const genreDropdownElement = document.createElement('genre-dropdown');
+genreDropdownElement.setAttribute('genres', JSON.stringify(genres));
+callingElements.searchGenres.appendChild(genreDropdownElement);
 
 // Create authors dropdown
-function createAuthor() { // populates Authors dropdown
-    const authorsHtml = newDocument;
-    const firstAuthorElement = document.createElement('option');
-    firstAuthorElement.value = 'any';
-    firstAuthorElement.innerText = 'All Authors';
-    authorsHtml.appendChild(firstAuthorElement);
-    
-    for (const [id, name] of Object.entries(authors)) {
-        const element = document.createElement('option');
-        element.value = id;
-        element.innerText = name;
-        authorsHtml.appendChild(element);
-    }
+const authorDropdownElement = document.createElement('author-dropdown');
+authorDropdownElement.setAttribute('authors', JSON.stringify(authors));
+callingElements.searchAuthors.appendChild(authorDropdownElement);
 
-    callingElements.searchAuthors.appendChild(authorsHtml); //Appends  the authors dropdown to the DOM
-}
-
-createAuthor();
 
 // Toggle theme styling
-function stylingToggleThemes() {
-    if (
-        window.matchMedia &&
-        window.matchMedia("(prefers-color-scheme: dark)").matches // checks if user prefers dark colour scheme
-      ) {
-        callingElements.settingsThemes.value = "night";
-        document.documentElement.style.setProperty("--color-dark", "255, 255, 255");
-        document.documentElement.style.setProperty("--color-light", "10, 10, 20");
-      } else {
-        callingElements.settingsThemes.value = "day";
-        document.documentElement.style.setProperty("--color-dark", "10, 10, 20");
-        document.documentElement.style.setProperty(
-          "--color-light",
-          "255, 255, 255"
-        );
-      }
-    
-      callingElements.listButtons.innerText = `Show more (${
-        books.length - BOOKS_PER_PAGE
-      })`;
-      callingElements.listButtons.disabled =
-        matches.length - page * BOOKS_PER_PAGE > 0;
-    
-      callingElements.listButtons.innerHTML = `
-          <span>Show more</span>
-          <span class="list__remaining"> (${
-            matches.length - page * BOOKS_PER_PAGE > 0
-              ? matches.length - page * BOOKS_PER_PAGE
-              : 0
-          })</span>
-      `;
-    }
-    
-    stylingToggleThemes();
+const themeToggleElement = document.createElement('theme-toggle');
+callingElements.settingsThemes.appendChild(themeToggleElement);
+
 
 // Set up event listeners
 function setUpEventlisteners() {
@@ -284,7 +225,7 @@ function selectedBook() { // handles selection of books
     }
     
     // modal comes up after book is clicked
-    if (active) {  // update the UI with the details if a book is selected
+    if (active) {  // updates the UI with the details if a book is selected
         callingElements.activeList.open = true;
         callingElements.listBlur.src = active.image;
         callingElements.listImage.src = active.image;

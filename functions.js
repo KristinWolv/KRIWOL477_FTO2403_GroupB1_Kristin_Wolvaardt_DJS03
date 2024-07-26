@@ -31,3 +31,4 @@ function createNewElements(type) {
   const newDocument = document.createDocumentFragment();
   
   export { callingElements, createNewElements, newDocument };
+  
