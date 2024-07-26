@@ -13,26 +13,17 @@ let matches = books;
 const starting = document.createDocumentFragment() // store the initial batch of book elements
 
 // Display initial books
-// for loop iterates over the first set of books / creates button elements for each
 for (const { author, id, image, title } of matches.slice(0, BOOKS_PER_PAGE)) {
-    const element = document.createElement('button');
-    element.classList = 'preview';
-    element.setAttribute('data-preview', id);
+  const element = document.createElement('book-preview');
+  element.setAttribute('data-preview', id);
+  element.setAttribute('image', image);
+  element.setAttribute('title', title);
+  element.setAttribute('author', authors[author]);
+  starting.appendChild(element); // adds each button to the document fragment
+}
 
-    element.innerHTML = `
-        <img
-            class="preview__image"
-            src="${image}"
-        />
-        
-        <div class="preview__info">
-            <h3 class="preview__title">${title}</h3>
-            <div class="preview__author">${authors[author]}</div>
-        </div>
-    `;
+callingElements.listItems.appendChild(starting); // append fragment to the DOM
 
-    starting.appendChild(element); // adds each button to the document fragment
-};
 
 callingElements.listItems.appendChild(starting); // append fragment to the DOM
 
