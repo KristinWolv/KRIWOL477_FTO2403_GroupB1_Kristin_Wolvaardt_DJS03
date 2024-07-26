@@ -4,6 +4,7 @@ import {
     callingElements,
     createNewElements,
 } from "./functions.js";
+import './book-preview.js';
 //these functions help with DOM manipulation
 
 let page = 1;
